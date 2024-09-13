@@ -1,0 +1,27 @@
+services:
+  jupyter:
+    build:
+      context: .
+    ports:
+      - "8889:8888"
+    volumes:
+      - jupyter-data:/home/ruslan/work
+    command: start-notebook.py --NotebookApp.token='my-token'
+
+  python:
+    build:
+      context: .
+      dockerfile: ./docker/python/Dockerfile
+    volumes:
+      - ./src/:/code:delegated
+    networks:
+      - time_candle
+
+networks:
+  time_candle:
+    name: jackson_the_movie
+    driver: bridge
+
+volumes:
+  jupyter-data:
+    name: jupyter-data
